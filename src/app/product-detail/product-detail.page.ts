@@ -165,18 +165,18 @@ export class ProductDetailPage implements OnInit {
       products_id: this.product.products_id.toString(),
       attributes: att
     };
-
+    console.log("req:  "+JSON.stringify(data));
     this.config.postHttp('getquantity', data).then((data: any) => {
       this.loading.hide();
       if (data.success == 1) {
         if (data.stock > 0) {
           this.cartButton = "addToCart"
-        }
+        } 
         else {
           this.cartButton = "outOfStock"
           this.shared.toast("Product Not Available With these Attributes!");
         }
-        console.log(data.stock);
+        console.log("Res :  "+JSON.stringify(data));
 
       }
     }, error => {

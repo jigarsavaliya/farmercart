@@ -14,9 +14,9 @@ if (localStorage.langId == undefined) {
   localStorage.langId = '1';//default language id
   localStorage.languageCode = "en"; //default language code
   localStorage.direction = "ltr"; //default language direction of app
-  localStorage.currency = "$";  //default currecny html code to show in app.
+  localStorage.currency = "₹";  //default currecny html code to show in app.
   // Please visit this link to get your html code  https://html-css-js.com/html/character-codes/currency/
-  localStorage.currencyCode = "USD";  //default currency code
+  localStorage.currencyCode = "inr";  //default currency code
   localStorage.currencyPos = "left";  //default currency position
   localStorage.decimals = 2;  //default currecny decimal
   localStorage.appNavigation = "tabs";  //default app naviagtion. tabs, sidemenu
@@ -26,6 +26,7 @@ if (localStorage.langId == undefined) {
 
 export class ConfigService {
 
+  
   public yourSiteUrl: string = 'http://128.199.20.85';
   public consumerKey: string = "b05aa83c16066562531e107c33";
   public consumerSecret: string = "9d65546816066562539b8a6069";
@@ -41,7 +42,7 @@ export class ConfigService {
   public bannerAnimationEffect = 'default'; // fade, coverFlow, flip, cube, default
   public bannerStyle = 'default';
   // default, squareBullets, numberBullets, bottomBulletsWhiteBackground, progressBar, verticalRightBullets, verticalLeftBullets
-  public productCardStyle = "1"
+  public productCardStyle = "2"
 
 
   public productSlidesPerPage = 2.5;
@@ -251,12 +252,12 @@ export class ConfigService {
     this.cartButton = this.appSettings.cart_button;
     this.footerShowHide = this.appSettings.footer_button;
     this.setLocalNotification();
-    this.appName = this.appSettings.app_name;
+    this.appName = this.appSettings.app_name; 
     this.homePage = this.appSettings.home_style;
-    this.categoryPage = this.appSettings.category_style;
+    this.categoryPage = this.appSettings.category_style; 
 
     if (this.appSettings.card_style)
-      this.productCardStyle = this.appSettings.card_style;
+      this.productCardStyle = "18";
     if (this.appSettings.banner_style)
       this.setBannerStyle(this.appSettings.banner_style);
 
@@ -289,19 +290,20 @@ export class ConfigService {
     this.enableAddressMap = (this.appSettings.is_enable_location == "1") ? true : false;
 
     this.showLoginForm = (this.appSettings.email_login == "1") ? true : false;
-    this.enablePhoneLogin = (this.appSettings.phone_login == "1") ? true : false;
+    this.enablePhoneLogin =  true ;
+    // this.enablePhoneLogin = (this.appSettings.phone_login == "1") ? true : false;
     this.phoneAuthWithFirebase = (this.appSettings.phone_verificatio_type == "firebase") ? true : false;
 
-    if (this.appNavigationTabs)
+    if (this.appNavigationTabs) 
       this.currentRoute = "tabs/" + this.getCurrentHomePage();
 
-    this.firebaseConfig = {
+    this.firebaseConfig = { 
       apiKey: this.appSettings.firebase_apikey,
       authDomain: this.appSettings.auth_domain,
       databaseURL: this.appSettings.database_URL,
       projectId: this.appSettings.projectId,
       storageBucket: this.appSettings.storage_bucket,
-      messagingSenderId: this.appSettings.messaging_senderid,
+      messagingSenderId: this.appSettings.messaging_senderid, 
     };
 
   }

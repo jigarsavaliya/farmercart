@@ -682,7 +682,18 @@
               <span [innerHTML]="price_html" class="price"></span>
             </ion-col>
           </ion-row>
-
+          <ion-row class="ion-no-padding">
+            <ion-col>
+              <div class="att-item" *ngFor=" let att of p.attributes">
+                <!-- <ion-label class="ion-hide">{{att.option.name}}</ion-label> -->
+                <ion-select   (ionChange)="fillAttributes(att.name,att.option.id)" [(ngModel)]="att.name" >
+                  <ion-select-option *ngFor="let item of att.values" >{{item.price_prefix+item.price+config.currency+' '+item.value}}
+                  </ion-select-option>
+                </ion-select>
+              </div>
+            </ion-col>
+          </ion-row>
+              
           <ion-row class="ion-no-padding" *ngIf="type!='flash'">
             <ion-col size=7>
               <span [innerHTML]="price_html" class="price"></span>
@@ -1008,7 +1019,7 @@
       </ion-card>
     </div>
     <!-- //====================================  list view for shop page ==================================== -->
-    <ion-item lines="none" *ngIf="type=='list'" class="animate-item">
+    <ion-item  lines="none" *ngIf="type=='list'" class="animate-item">
       <ion-thumbnail slot="start">
         <!-- <ion-img class="badge-img" src="assets/badge_new.svg" *ngIf="checkProductNew()"></ion-img> -->
         <img src="{{config.imgUrl+p.products_image}}" (click)="showProductDetail()">

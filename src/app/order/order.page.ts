@@ -374,7 +374,7 @@ export class OrderPage implements OnInit {
     this.loading.autoHide(2000);
     var nonce = 0;
     var _this = this;
-    var promise = new Promise((resolve, reject) => {
+    var promise = new Promise<void>((resolve, reject) => {
       braintree.setup(clientToken, 'custom', {
         paypal: {
           container: 'paypal-container',
@@ -409,7 +409,7 @@ export class OrderPage implements OnInit {
   braintreeCreditCard(clientToken) {
     // this.loading.autoHide(2000);
     var nonce = 0;
-    var promise = new Promise((resolve, reject) => {
+    var promise = new Promise<void>((resolve, reject) => {
 
       var braintreeForm = document.querySelector('#braintree-form');
       var braintreeSubmit = document.querySelector('ion-button[id="braintreesubmit"]');

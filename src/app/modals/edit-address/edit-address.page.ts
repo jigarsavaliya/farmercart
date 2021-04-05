@@ -29,9 +29,14 @@ export class EditAddressPage implements OnInit {
     this.type = navParams.get('type');
 
     if (this.type != 'add') {
+      
       this.shippingData.entry_firstname = this.data.firstname;
       this.shippingData.entry_lastname = this.data.lastname;
       this.shippingData.entry_street_address = this.data.street;
+      this.shippingData.street = this.data.address;
+      this.shippingData.building = this.data.building;
+      this.shippingData.area = this.data.area;
+      this.shippingData.block = this.data.block;
       this.shippingData.entry_country_name = this.data.country_name;
       this.shippingData.entry_zone = this.data.zone_name;
       this.shippingData.entry_postcode = this.data.postcode;

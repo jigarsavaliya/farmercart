@@ -20,7 +20,7 @@ export class ProductComponent implements OnInit {
   @Input('data') p;//product data
   @Input('type') type;
   // @Output() someEvent = new EventEmitter();
-
+  attributes = [];
   expired = false;
   is_upcomming = false;
   price_html = "";
@@ -38,7 +38,7 @@ export class ProductComponent implements OnInit {
     // flash_expires_date
     // flash_start_date
     // server_time
-
+    
     let wishListUpdate = this.appEventsService.subscribe("wishListUpdate");
     wishListUpdate.subscriptions.add(wishListUpdate.event.subscribe(data => {
 
@@ -50,7 +50,30 @@ export class ProductComponent implements OnInit {
       let id = data;
       if (this.p.products_id == id) this.productExpired();
     }));
+
   }
+  setupAttributes() { 
+    if (this.p.attributes != null && this.p.attributes != undefined && this.p.attributes.length != 0) {
+    //this.selectAttribute = this.product.attributes[0].values[0];
+    // console.log(this.selectAttribute);
+    this.p.attributes.forEach((value, index) => {
+
+      var att = {
+        products_options_id: value.option.id,
+        products_options: value.option.name, 
+        products_options_values_id: value.values[0].id,
+        options_values_price: value.values[0].price,
+        price_prefix: value.values[0].price_prefix,
+        products_options_values: value.values[0].value,
+        attribute_id: value.values[0].products_attributes_id,
+        name: value.values[0].value + ' ' + value.values[0].price_prefix + value.values[0].price + " " + this.config.currency
+      };
+      value.name = value.values[0];
+      this.attributes.push(att);
+    });
+    // this.checkAvailability();
+    console.log(this.attributes);
+  }}
   productExpired() {
     console.log("expired " + this.p.products_name);
     this.expired = true
@@ -58,7 +81,7 @@ export class ProductComponent implements OnInit {
 
   pDiscount() {
     if (this.type != "flash") {
-      var rtn = "";
+      var rtn = ""; 
       var p1 = parseInt(this.p.products_price);
       var p2 = parseInt(this.p.discount_price);
       if (p1 == 0 || p2 == null || p2 == undefined || p2 == 0) { rtn = ""; }
@@ -122,7 +145,7 @@ export class ProductComponent implements OnInit {
       return false
   }
 
-  addToCart() { this.shared.addToCart(this.p, []); }
+  addToCart() { this.shared.addToCart(this.p,this.attributes); }
 
   isInCart() {
     var found = false;
@@ -140,8 +163,9 @@ export class ProductComponent implements OnInit {
   }
 
   getProductImage() {
+     
     return this.config.imgUrl + this.p.products_image;
-  }
+  } 
 
   getButtonText() {
 
@@ -238,6 +262,8 @@ export class ProductComponent implements OnInit {
     }
 
     this.price_html = this.getPriceHtml();
+    this.setupAttributes();
+
   }
 
 
@@ -308,10 +334,78 @@ export class ProductComponent implements OnInit {
   }
 
   updateCart() {
-    this.shared.removeCart(this.shared.cartProducts);
+    this.shared.removeCart(this.shared.cartProducts); 
   }
 
   ratingPercentage() {
     return this.shared.getProductRatingPercentage(this.p.rating);
+  }
+
+  fillAttributes = function (val, optionID) {
+
+    //console.log(val);
+    //  console.log(this.attributes);
+    this.attributes.forEach((value, index) => {
+      if (optionID == value.products_options_id) {
+        value.products_options_values_id = val.id;
+        value.options_values_price = val.price;
+        value.price_prefix = val.price_prefix;
+        value.attribute_id = val.products_attributes_id;
+        value.products_options_values = val.value;
+        value.name = val.value + ' ' + val.price_prefix + val.price + " " + this.config.currency
+      }
+    });
+    console.log(this.attributes);
+    //calculating total price  
+    this.calculatingTotalPrice();
+    this.checkAvailability();
+  };
+  calculatingTotalPrice = function () {
+    var price = parseFloat(this.p.products_price.toString());
+    if (this.p.discount_price != null || this.p.discount_price != undefined)
+      price = this.p.discount_price;
+    var totalPrice = this.shared.calculateFinalPriceService(this.attributes) + parseFloat(price.toString());
+
+    if (this.p.discount_price != null || this.p.discount_price != undefined)
+      this.discount_price = totalPrice;
+    else
+      this.product_price = totalPrice;
+    //  console.log(totalPrice);
+    this.price_html = this.getPriceHtml();
+  };
+  checkAvailability() {
+    // this.loading.show();
+    let att = [];
+    for (let a of this.attributes) {
+      att.push(a.attribute_id.toString());
+    }
+
+    let data = {
+      products_id: this.p.products_id.toString(),
+      attributes: att
+    };
+    console.log("req:  "+JSON.stringify(data));
+
+    this.config.postHttp('getquantity', data).then((data: any) => {
+      this.loading.hide();
+      if (data.success == 1) {
+        if (data.stock > 0) {
+          // this.cartButton = "addToCart"
+        } 
+        else {
+          // this.cartButton = "outOfStock"
+          // this.shared.toast("Product Not Available With these Attributes!");
+        }
+        console.log("Res :  "+JSON.stringify(data));
+
+      }
+    }, error => {
+      this.loading.hide();
+    });
+  }
+  compareFn(e1, e2): boolean {
+    console.log(e1 , e2);
+    
+    return e1 && e2 ? e1.id == e2.id : e1 == e2;
   }
 }

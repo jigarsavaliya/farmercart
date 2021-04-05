@@ -194,7 +194,8 @@ export class AppComponent {
   }
   initializeApp() {
     this.plt.ready().then(() => {
-      this.runAdmob();
+      // this.runAdmob();
+      this.loadHomePage()
       this.config.siteSetting().then((value) => {
         firebase.initializeApp(this.config.firebaseConfig);
         this.loadHomePage()
@@ -213,7 +214,7 @@ export class AppComponent {
       }
       this.statusBar.styleLightContent();
 
-    });
+    }); 
 
   }
 

@@ -30,6 +30,26 @@
             <ion-input type="text" placeholder="{{'Address'|translate}}" name="street"
               [(ngModel)]="shippingData.entry_street_address" required></ion-input>
           </ion-item>
+          <!-- <ion-text class="helptext"> * {{"required"|translate}}</ion-text> -->
+          <ion-item>
+            <ion-input type="text" placeholder="{{'Street'|translate}}" name="address"
+              [(ngModel)]="shippingData.street" ></ion-input>
+          </ion-item>
+          <!-- <ion-text class="helptext"> * {{"required"|translate}}</ion-text> -->
+          <ion-item>
+            <ion-input type="text" placeholder="{{'Block'|translate}}" name="block"
+              [(ngModel)]="shippingData.block" ></ion-input>
+          </ion-item>
+          <!-- <ion-text class="helptext"> * {{"required"|translate}}</ion-text> -->
+          <ion-item>
+            <ion-input type="text" placeholder="{{'Address'|translate}}" name="building"
+              [(ngModel)]="shippingData.building" ></ion-input>
+          </ion-item>
+          <!-- <ion-text class="helptext"> * {{"required"|translate}}</ion-text> -->
+          <ion-item>
+            <ion-input type="text" placeholder="{{'Address'|translate}}" name="area"
+              [(ngModel)]="shippingData.area" ></ion-input>
+          </ion-item>
           <ion-text class="helptext"> * {{"required"|translate}}</ion-text>
           <ion-item>
             <ion-input type="text" placeholder="{{'Country'|translate}}" name="country_name"
