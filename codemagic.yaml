@@ -40,8 +40,8 @@ workflows:
         name: Ionic Cordova iOS App
         environment:
             vars:
-                XCODE_WORKSPACE: "{{ ADD WORKSPACE NAME HERE }}"
-                XCODE_SCHEME: "{{ ADD SCHEME NAME HERE }}"
+                XCODE_WORKSPACE: "ios/App/App.xcworkspace" # <- 'App' is the default workspace name for Capacitor projects
+                XCODE_SCHEME: "App" # <- 'App' is the default Scheme name for Capacitor projects
             node: latest
         scripts: 
             - |
